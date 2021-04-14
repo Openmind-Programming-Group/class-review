@@ -13,32 +13,24 @@
 
   ```
    📁 class-review
-   ┣ 📂 freshman
+   ┣ 📂 grade 1
    ┃ ┣ 📂 (class name)
-   ┃ ┃ ┣ 📂(your name)
-   ┃ ┃ ┃ ┗ 📝 review README
-   ┃ ┃ ┗ 📝 (class README)
+   ┃ ┃ ┗ 📝 (review README)
    ┃ ┗ 📝 (intro README)
    ┃
-   ┣ 📂 sophomore
+   ┣ 📂 grade 2
    ┃ ┣ 📂 (class name)
-   ┃ ┃ ┣ 📂(your name)
-   ┃ ┃ ┃ ┗ 📝 review README
-   ┃ ┃ ┗ 📝 (class README)
+   ┃ ┃ ┗ 📝 (review README)
    ┃ ┗ 📝 (intro README)
    ┃
-   ┣ 📂 junior
+   ┣ 📂 grade 3
    ┃ ┣ 📂 (class name)
-   ┃ ┃ ┣ 📂(your name)
-   ┃ ┃ ┃ ┗ 📝 review README
-   ┃ ┃ ┗ 📝 (class README)
+   ┃ ┃ ┗ 📝 (review README)
    ┃ ┗ 📝 (intro README)
    ┃
-   ┗ 📂senior
+   ┗ 📂 grade 4
      ┣ 📂 (class name)
-     ┃ ┣ 📂(your name)
-     ┃ ┃ ┗ 📝 review README
-     ┃ ┗ 📝 (class README)
+     ┃ ┗ 📝 (review README)
      ┗ 📝 (intro README)
 
   ```
@@ -54,20 +46,9 @@
   
 ---
 
-### class README
-
-- 수업에 따른 목차를 정리합니다.
-  > 아래의 자료는 이해를 위해 임의로 작성된 예시입니다.
-
----
-
-<img width="528" alt="스크린샷 2021-03-08 오후 10 58 27" src="https://user-images.githubusercontent.com/57972338/110330990-d3e33d00-8061-11eb-91f6-ef015db3186f.png">
-
----
-
 ### review README
 
-- 자신이 작성한 리뷰를 의미합니다.
+- 작성한 리뷰를 의미합니다.
   > 아래의 자료는 이해를 위해 임의로 작성된 예시입니다.
 
 ---
