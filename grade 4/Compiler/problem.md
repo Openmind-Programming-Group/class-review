@@ -161,6 +161,10 @@ exp ⟶ exp addop term | term
 
 // 5
 exp ⟶ exp + term | exp - term | term
+
+// 6
+S ⟶ Aa | b
+A ⟶ Ac | Sd | e
 ```
 
 정답
@@ -185,4 +189,56 @@ exp' ⟶ addop term exp' | ε
 // 5
 exp ⟶ term exp'
 exp' ⟶ + term exp' | - term exp' | ε
+
+// 6
+A에 있는 Sd에서 S의 생성규칙을 대입하였을 때
+S ⟶ Aa | b
+A ⟶ Ac | Aad | bd | e 에서
+
+S ⟶ Aa | b
+A ⟶ bdA' | eA'
+A'⟶ cA' | adA' | ε
+```
+
+## 하향식 구문분석 (Top-Down)
+
+#### 1. First를 구하시오.
+
+```
+type ⟶ simple
+      |  ^ id
+      |  array [simple] of type
+simple ⟶ integer
+        |  char
+        |  num dotdot num
+
+```
+
+- First(type) = {simple, ^, array}
+- First(simple) = {integer, char, num}
+
+#### 2. First를 구하시오.
+
+```
+// 1
+A ⟶ aB | B
+B ⟶ bC | C
+C ⟶ c
+
+// 2
+S ⟶ ABc
+A ⟶ bA | ε
+B ⟶ c
+```
+
+```
+// solved 1
+First(A) = First(aB) ⋃ First(B) = First(a) ⨁ First(B) ⋃ First(B) = {a, b, c}
+First(B) = First(bC) ⋃ First(C) = First(b) ⨁ First(C) ⋃ First(C) = {b, c}
+First(C) = {c}
+
+// solved 2
+First(S) = First(A) ⨁ First(B) ⨁ First(c) = {b, c}
+First(A) = First(bA) ⋃ First(ε)  = First(b) ⨁ First(A) ⋃ First(ε) = {b, ε} = {b}
+first(B) = {c}
 ```
