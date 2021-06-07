@@ -68,5 +68,5 @@ stmt-sequence ⟶ stmt; stmt-sequence | stmt
 stmt ⟶ s
 ```
 
-- 해당 문법은 **우순환**이기 때문에 A ⟶ ⍺A|β ⟶ $⍺^*β$로 치환 가능하다.
-- 즉 $(stmt;)^*stmt ⟶ (s;)^*s$ 이다.
+- 해당 문법은 **우순환**이기 때문에 A ⟶ ⍺A|β ⟶ <img src="https://latex.codecogs.com/svg.image?\alpha&space;^{*}\beta&space;" title="\alpha ^{*}\beta " />로 치환 가능하다.
+- 즉 <img src="https://latex.codecogs.com/svg.image?(stmt;)^{*}stmt&space;\rightarrow&space;(s;)^{*}s" title="(stmt;)^{*}stmt \rightarrow (s;)^{*}s" /> 이다.
