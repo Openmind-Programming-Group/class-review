@@ -1,4 +1,4 @@
-# 컴파일러 설계 에상문제 풀이
+# 컴파일러 설계 예상문제 풀이
 
 ## Context Free Grammar (CFG)
 
