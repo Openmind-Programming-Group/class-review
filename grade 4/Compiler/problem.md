@@ -70,3 +70,119 @@ stmt ⟶ s
 
 - 해당 문법은 **우순환**이기 때문에 A ⟶ ⍺A|β ⟶ <img src="https://latex.codecogs.com/svg.image?\alpha&space;^{*}\beta&space;" title="\alpha ^{*}\beta " />로 치환 가능하다.
 - 즉 <img src="https://latex.codecogs.com/svg.image?(stmt;)^{*}stmt&space;\rightarrow&space;(s;)^{*}s" title="(stmt;)^{*}stmt \rightarrow (s;)^{*}s" /> 이다.
+- L(G) = {s, s;s, s;s;s, ...} ⟶ ; is a separator
+
+#### 9. 해당 문법에서 `(34-3)*42`를 좌단유도(leftmost derivations), 우단유도(rightmost derivations)하여라.
+
+```
+exp ⟶ exp op exp | (exp) | number
+op ⟶ + | - | *
+```
+
+- 좌단유도
+
+  - exp ⇒ exp op exp
+    ⇒ (exp) op exp
+    ⇒ (exp op exp) op exp
+    ⇒ (number op exp) op exp
+    ⇒ (number - exp) op exp
+    ⇒ (number - number) op exp
+    ⇒ (number - number) \* exp
+    ⇒ (number - number) \* number
+
+- 우단유도
+  - exp ⇒ exp op exp
+    ⇒ exp op number
+    ⇒ exp \* number
+    ⇒ (exp) \* number
+    ⇒ (exp op exp) \* number
+    ⇒ (exp op number) \* number
+    ⇒ (exp - number) \* number
+    ⇒ (number - number) \* number
+
+## 전처리
+
+#### 1. 하향식(Top-Down) 구문 분석을 위해서는 전처리가 필요한가?
+
+- **Yes**. 공통부분이 있는 생성규칙들은 공통부분을 묶은 생성규칙으로 변환해야하며 좌순환 되어있는 생성규칙을 우순환 생성규칙으로 변환하여야 한다.
+- 하지만 상향식(Bottom-Up) 구문 분석은 전처리가 필요하지 않다.
+
+#### 2. 다음 문법에 대해 좌인수분해 하여라
+
+```
+// 1
+stmt-sequence ⟶ stmt; stmt-sequence | stmt
+stmt ⟶ s
+
+// 2
+exp ⟶ term + exp | term
+
+// 3
+statement ⟶ assign-stmt | call-stmt | other
+assign-stmt ⟶ identifier := exp
+call-stmt ⟶ identifier (exp - list)
+```
+
+1. stmt-sequence ⟶ stmt stmt-seq'
+   stmt-seq' ⟶ ; stmt-sequence | ε
+
+2. exp ⟶ term exp'
+   exp' ⟶ + exp | ε
+
+3. statement ⟶ identifier statement' | other
+   statement' ⟶ := exp | (exp - list)
+
+#### 3. 아래 문법을 사용해 `id + id * id`를 좌단 유도로 생성해보자
+
+```
+E ⟶ E + T | T
+T ⟶ T * F | F
+F ⟶ (E) | id
+```
+
+- 절대 못한다. 좌단 유도를 통해 E ⟶ E + T 로 파싱했을 경우 이미 오른쪽에 + 기호가 들어가므로 좌단을 통해 해당 식을 만들 수는 없다.
+
+#### 4. 해당 문법에 대해 우순환으로 바꾸어라
+
+```
+// 1
+A ⟶ Aa
+A ⟶ b
+
+// 2
+expr ⟶ expr + term | term
+
+// 3
+E ⟶ E + E
+E ⟶ id
+
+// 4
+exp ⟶ exp addop term | term
+
+// 5
+exp ⟶ exp + term | exp - term | term
+```
+
+정답
+
+```
+// 1
+A ⟶ bA'
+A' ⟶ aA' | ε
+
+// 2
+expr ⟶ term R
+R ⟶ + term R | ε
+
+// 3
+E ⟶ id E'
+E' ⟶ + E E' | ε
+
+// 4
+exp ⟶ term exp'
+exp' ⟶ addop term exp' | ε
+
+// 5
+exp ⟶ term exp'
+exp' ⟶ + term exp' | - term exp' | ε
+```
