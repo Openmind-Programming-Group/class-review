@@ -92,7 +92,7 @@ if (1) other else if (0) other else other
 - L(G) = {the strings of all "balanced parentheses"}
 
 - (())()의 유도 과정
-- A ⟶ (A)A ⟶ (A)(A)A ⟶(A)(A)ε ⟶ (A)(ε) ⟶ ((A)A)() ⟶ ((ε)A)() ⟶ (()ε)() ⟶ (())()
+  - A ⟶ (A)A ⟶ (A)(A)A ⟶(A)(A)ε ⟶ (A)(ε) ⟶ ((A)A)() ⟶ ((ε)A)() ⟶ (()ε)() ⟶ (())()
 
 </details>
 
@@ -124,7 +124,8 @@ op ⟶ + | - | *
 
 - 좌단유도
 
-  - exp ⇒ exp op exp
+  ```
+  exp ⇒ exp op exp
     ⇒ (exp) op exp
     ⇒ (exp op exp) op exp
     ⇒ (number op exp) op exp
@@ -132,16 +133,20 @@ op ⟶ + | - | *
     ⇒ (number - number) op exp
     ⇒ (number - number) \* exp
     ⇒ (number - number) \* number
+  ```
 
 - 우단유도
-  - exp ⇒ exp op exp
-    ⇒ exp op number
-    ⇒ exp \* number
-    ⇒ (exp) \* number
-    ⇒ (exp op exp) \* number
-    ⇒ (exp op number) \* number
-    ⇒ (exp - number) \* number
-    ⇒ (number - number) \* number
+
+  ```
+  exp ⇒ exp op exp
+      ⇒ exp op number
+      ⇒ exp * number
+      ⇒ (exp) * number
+      ⇒ (exp op exp) * number
+      ⇒ (exp op number) * number
+      ⇒ (exp - number) * number
+      ⇒ (number - number) * number
+  ```
 
 </details>
 
@@ -176,14 +181,19 @@ call-stmt ⟶ identifier (exp - list)
 <details>
  <summary>정답</summary>
 
-1. stmt-sequence ⟶ stmt stmt-seq'
-   stmt-seq' ⟶ ; stmt-sequence | ε
+```
+// solved 1
+stmt-sequence ⟶ stmt stmt-seq'
+stmt-seq' ⟶ ; stmt-sequence | ε
 
-2. exp ⟶ term exp'
-   exp' ⟶ + exp | ε
+// solved 2
+exp ⟶ term exp'
+exp' ⟶ + exp | ε
 
-3. statement ⟶ identifier statement' | other
-   statement' ⟶ := exp | (exp - list)
+// solved 3
+statement ⟶ identifier statement' | other
+statement' ⟶ := exp | (exp - list)
+```
 
 </details>
 
@@ -198,7 +208,8 @@ F ⟶ (E) | id
 <details>
  <summary>정답</summary>
 
-- 절대 못한다. 좌단 유도를 통해 E ⟶ E + T 로 파싱했을 경우 이미 오른쪽에 + 기호가 들어가므로 좌단을 통해 해당 식을 만들 수는 없다.
+- ~~절대 못한다. 좌단 유도를 통해 E ⟶ E + T 로 파싱했을 경우 E의 오른쪽에 + 기호가 들어가므로 좌단을 통해 해당 식을 만들 수는 없다.~~
+- 되는 거 같아서 질문에 올림
 
 </details>
 
@@ -231,27 +242,27 @@ A ⟶ Ac | Sd | e
  <summary>정답</summary>
 
 ```
-// 1
+// solved 1
 A ⟶ bA'
 A' ⟶ aA' | ε
 
-// 2
+// solved 2
 expr ⟶ term R
 R ⟶ + term R | ε
 
-// 3
+// solved 3
 E ⟶ id E'
 E' ⟶ + E E' | ε
 
-// 4
+// solved 4
 exp ⟶ term exp'
 exp' ⟶ addop term exp' | ε
 
-// 5
+// solved 5
 exp ⟶ term exp'
 exp' ⟶ + term exp' | - term exp' | ε
 
-// 6
+// solved 6
 A에 있는 Sd에서 S의 생성규칙을 대입하였을 때
 S ⟶ Aa | b
 A ⟶ Ac | Aad | bd | e 에서
