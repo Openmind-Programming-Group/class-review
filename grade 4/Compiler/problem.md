@@ -291,8 +291,8 @@ simple ⟶ integer
 <details>
  <summary>정답</summary>
 
-- First(type) = {simple, ^, array}
-- First(simple) = {integer, char, num}
+- FIRST(type) = {simple, ^, array}
+- FIRST(simple) = {integer, char, num}
 
 </details>
 
@@ -320,19 +320,19 @@ Tail ⟶ + E | ε
 
 ```
 // solved 1
-First(A) = First(aB) ⋃ First(B) = First(a) ⨁ First(B) ⋃ First(B) = {a, b, c}
-First(B) = First(bC) ⋃ First(C) = First(b) ⨁ First(C) ⋃ First(C) = {b, c}
-First(C) = {c}
+FIRST(A) = FIRST(aB) ∪ FIRST(B) = FIRST(a) ⨁ FIRST(B) ∪ FIRST(B) = {a, b, c}
+FIRST(B) = FIRST(bC) ∪ FIRST(C) = FIRST(b) ⨁ FIRST(C) ∪ FIRST(C) = {b, c}
+FIRST(C) = {c}
 
 // solved 2
-First(S) = First(A) ⨁ First(B) ⨁ First(c) = {b, c}
-First(A) = First(bA) ⋃ First(ε)  = First(b) ⨁ First(A) ⋃ First(ε) = {b, ε} = {b}
+FIRST(S) = FIRST(A) ⨁ FIRST(B) ⨁ FIRST(c) = {b, c}
+FIRST(A) = FIRST(bA) ∪ FIRST(ε)  = FIRST(b) ⨁ FIRST(A) ∪ FIRST(ε) = {b, ε} = {b}
 first(B) = {c}
 
 // solved 3
-First(E) = First(Prefix(E)) ⋃  First(v Tail) = First(Prefix) ⨁ First(() ⋃ First(v) = {f, (} ⋃ {v} = {f, (, v}
-First(Prefix) = {f}
-First(Tail) = {+}
+FIRST(E) = FIRST(Prefix(E)) ∪  FIRST(v Tail) = FIRST(Prefix) ⨁ FIRST(() ∪ FIRST(v) = {f, (} ∪ {v} = {f, (, v}
+FIRST(Prefix) = {f}
+FIRST(Tail) = {+}
 ```
 
 </details>
@@ -355,18 +355,18 @@ B ⟶ c
 
 ```
 // solved 1
-First(S) = {a}
-First(A) = {a, b}
-Follow(S) = {$} ⋃ Follow(A) = {$, b}
-Follow(A) = {b}
+FIRST(S) = {a}
+FIRST(A) = {a, b}
+FOLLOW(S) = {$} ∪ FOLLOW(A) = {$, b}
+FOLLOW(A) = {b}
 
 // solved 2
-First(S) = {b, c}
-First(A) = {b}
-First(B) = {c}
-Follow(S) = {$}
-Follow(A) = First(B) = {c}
-Follow(B) = {c}
+FIRST(S) = {b, c}
+FIRST(A) = {b}
+FIRST(B) = {c}
+FOLLOW(S) = {$}
+FOLLOW(A) = FIRST(B) = {c}
+FOLLOW(B) = {c}
 ```
 
 </details>
@@ -383,12 +383,12 @@ B ⟶ b | ε
  <summary>정답</summary>
 
 ```
-First(S) = First(A) ⨁ First(B) ⨁ First(c) = {a, b, c}
-First(A) = {a}
-First(B) = {b}
-Follow(S) = {$}
-Follow(A) = First(B) ⨁ First(c) = {b, c}
-Follow(B) = First(c) = {c}
+FIRST(S) = FIRST(A) ⨁ FIRST(B) ⨁ FIRST(c) = {a, b, c}
+FIRST(A) = {a}
+FIRST(B) = {b}
+FOLLOW(S) = {$}
+FOLLOW(A) = FIRST(B) ⨁ FIRST(c) = {b, c}
+FOLLOW(B) = FIRST(c) = {c}
 ```
 
 </details>
@@ -405,12 +405,12 @@ Tail ⟶ + E | ε
  <summary>정답</summary>
 
 ```
-First(E) = First(Prefix ( E ) ) ⋃ First(v Tail) = First(Prefix) ⨁ First(() ⋃ First(v) = {f, (, v}
-First(Prefix) = {f}
-First(Tail) = {+}
-Follow(E) = First()) ⋃ Follow(Tail) ⋃ {$} = {$, )}
-Follow(Prefix) = First(() = {(}
-Follow(Tail) = Follow(E) = {$, )}
+FIRST(E) = FIRST(Prefix ( E ) ) ∪ FIRST(v Tail) = FIRST(Prefix) ⨁ FIRST(() ∪ FIRST(v) = {f, (, v}
+FIRST(Prefix) = {f}
+FIRST(Tail) = {+}
+FOLLOW(E) = FIRST()) ∪ FOLLOW(Tail) ∪ {$} = {$, )}
+FOLLOW(Prefix) = FIRST(() = {(}
+FOLLOW(Tail) = FOLLOW(E) = {$, )}
 ```
 
 </details>
@@ -433,22 +433,92 @@ T ⟶ R S | T a T
 
 ```
 // solved 1
-First(S) = {a}
-First(A) = {b}
-Follow(S) = First(A) ⋃ {$} = {b, $}
-Follow(A) = Follow(S) = {b, $}
+FIRST(S) = {a}
+FIRST(A) = {b}
+FOLLOW(S) = FIRST(A) ∪ {$} = {b, $}
+FOLLOW(A) = FOLLOW(S) = {b, $}
 
 // solved 2
 좌순환을 우순환으로 전처리
 T ⟶ R S T'
 T' ⟶ a T T' | ε
 
-First(S) = {a, b}
-First(R) = {c}
-First(T) = First(R) ⨁ First(S) = {a, b, c}
-Follow(S) = Follow(T) ⋃ {$} = {a, b, $}
-Follow(R) = First(Tb) ⋃ First(R) ⋃ Follow(S) ⋃ {d} ⋃ First(S) = {a, b, c, d, $}
-Follow(T) = {a} ⋃ {b} = {a, b}
+FIRST(S) = {a, b}
+FIRST(R) = {c}
+FIRST(T) = FIRST(R) ⨁ FIRST(S) = {a, b, c}
+FOLLOW(S) = FOLLOW(T) ∪ {$} = {a, b, $}
+FOLLOW(R) = FIRST(Tb) ∪ FIRST(R) ∪ FOLLOW(S) ∪ {d} ∪ FIRST(S) = {a, b, c, d, $}
+FOLLOW(T) = {a} ∪ {b} = {a, b}
+```
+
+</details>
+
+#### 7. 해당 생성규칙에서 다음 PREDICT Set을 구하시오
+
+```
+S ⟶ A C $
+C ⟶ c | ε
+A ⟶ a B C d | B Q
+B ⟶ b B | ε
+Q ⟶ q | ε
+
+PREDICT(S ⟶ A C $) = ?
+PREDICT(Q ⟶ q) = ?
+PREDICT(Q ⟶ ε) = ?
+```
+
+<details>
+ <summary>정답</summary>
+
+```
+FIRST(S) = {a, b, c, q, $}
+FIRST(C) = {c}
+FIRST(A) = {a, b, q}
+FIRST(B) = {b}
+FIRST(Q) = {q}
+FOLLOW(S) = {$}
+FOLLOW(C) = {$, d}
+FOLLOW(A) = {c, $}
+FOLLOW(B) = {c, d, q, $}
+FOLLOW(Q) = {c, $}
+
+// 1
+PREDICT(S ⟶ A C $) = S 는 single rule 이므로  predict set을 구할 필요가 없음
+
+PREDICT(Q ⟶ q) = FIRST(Q) = {q}
+PREDICT(Q ⟶ ε) = FOLLOW(Q) = {c, $}
+```
+
+</details>
+
+#### 8. 다음 식에 대하여 LL(1) 조건을 만족하는지 살펴보시오
+
+```
+// 1
+S ⟶ aAb
+A ⟶ aS | b
+
+// 2
+S ⟶ ABc
+A ⟶ bA | ε
+B ⟶ c
+```
+
+<details>
+ <summary>정답</summary>
+
+- LL(1) 조건을 만족하려면 A ⟶ ⍺|β 에 대해 다음과 같아야 한다.
+  > 1.  FIRST( ⍺ ) ∩ FIRST( β ) = ∅
+  > 2.  FOLLOW( A ) ∩ FIRST( β )= ∅,if ε ⊂ FIRST( ⍺ )
+
+```
+// solved 1
+FIRST(aS) ∩ FIRST(b) = {a} ∩ {b} = ∅
+>>> It's LL(1)
+
+// solved 2
+FIRST(bA) | FOLLOW(A) = {b} ∩ {c} = ∅
+>>> It's LL(1)
 ```
 
 </details>
