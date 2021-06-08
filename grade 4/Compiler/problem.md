@@ -403,3 +403,41 @@ Follow(Tail) = Follow(E) = {$, )}
 ```
 
 </details>
+
+#### 6. First와 Follow를 구하시오
+
+```
+// 1
+S ⟶ a S A | ε
+A ⟶ b
+
+// 2
+S ⟶ a R T b | b R R
+R ⟶ c R d | ε
+T ⟶ R S | T a T
+```
+
+<details>
+ <summary>정답</summary>
+
+```
+// solved 1
+First(S) = {a}
+First(A) = {b}
+Follow(S) = First(A) ⋃ {$} = {b, $}
+Follow(A) = Follow(S) = {b, $}
+
+// solved 2
+좌순환을 우순환으로 전처리
+T ⟶ R S T'
+T' ⟶ a T T' | ε
+
+First(S) = {a, b}
+First(R) = {c}
+First(T) = First(R) ⨁ First(S) = {a, b, c}
+Follow(S) = Follow(T) ⋃ {$} = {a, b, $}
+Follow(R) = First(Tb) ⋃ First(R) ⋃ Follow(S) ⋃ {d} ⋃ First(S) = {a, b, c, d, $}
+Follow(T) = {a} ⋃ {b} = {a, b}
+```
+
+</details>
