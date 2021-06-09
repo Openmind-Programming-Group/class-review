@@ -502,6 +502,15 @@ A ⟶ aS | b
 S ⟶ ABc
 A ⟶ bA | ε
 B ⟶ c
+
+// 3
+A ⟶ iB⬅e
+B ⟶ SB | ε
+S ⟶ [eC] | .i
+C ⟶ eC | ε
+
+// 4
+E ⟶ E + id | id
 ```
 
 <details>
@@ -519,6 +528,147 @@ FIRST(aS) ∩ FIRST(b) = {a} ∩ {b} = ∅
 // solved 2
 FIRST(bA) | FOLLOW(A) = {b} ∩ {c} = ∅
 >>> It's LL(1)
+
+// solved 3
+FIRST(SB) ∩ FOLLOW(B) = {[, .} ∩ {⬅} = ∅
+FIRST([eC]) ∩ FIRST(.i) = {[} ∩ {.} = ∅
+FIRST(eC) ∩ FOLLOW(C) = {e} ∩ {]} = ∅
+>>> It's LL(1)
+
+// solved 4
+우순환을 좌순환으로 변경
+E ⟶ id E'
+E' ⟶ + id E' | ε
+
+FIRST(+ id E') ∩ FOLLOW(E') = {+} ∩ {$} = ∅
 ```
+
+</details>
+
+#### 9. 다음 문법과 Input값을 가지고 파싱 및 파싱테이블을 구성하시오
+
+```
+S ⟶ (S)S | ε
+
+Input : ()
+```
+
+<details>
+ <summary>정답</summary>
+
+- FIRST(`(S)S`) ∩ FOLLOW(`S`) = {(} ∩ {), $} = ∅ 이므로 LL(1) 조건에 만족한다.
+
+- 파싱 과정
+
+  | Parsing Stack | Input |  Action  |
+  | :------------ | ----: | :------: |
+  | $S            |   ()$ | S ⟶ (S)S |
+  | $S)S(         |   ()$ |  match   |
+  | $S)S          |    )$ |  S ⟶ ε   |
+  | $S)           |    )$ |  match   |
+  | $S            |     $ |  S ⟶ ε   |
+  | $             |     $ |  accept  |
+
+- 파싱 테이블
+
+  | M[N,T] |    (     |   )   |   $   |
+  | :----: | :------: | :---: | :---: |
+  |   S    | S ⟶ (S)S | S ⟶ ε | S ⟶ ε |
+
+- 파싱 테이블의 크기는 **N · (T + 1)**이다.
+
+</details>
+
+#### 10. 다음 문법을 가지고 파싱 테이블을 구성하여라
+
+```
+각 생성규칙에 대해 번호를 지정하면 다음과 같다.
+1. S ⟶ A C $
+2. C ⟶ c
+3.    | ε
+4. A ⟶ a B C d
+5.    | B Q
+6. B ⟶ b B
+7.    | ε
+8. Q  ⟶ q
+9.    | ε
+```
+
+<details>
+ <summary>정답</summary>
+
+```
+FIRST(S) = {a, b, c, q, $}
+FIRST(C) ={c}
+FIRST(A) = {a, b, q}
+FIRST(B) = {b}
+FIRST(Q) = {q}
+FOLLOW(S) ={$}
+FOLLOW(C) = {$, d}
+FOLLOW(A) = {c, $}
+FOLLOW(B) = {c, d, q, $}
+FOLLOW(Q) = {c, $}
+```
+
+- 파싱 테이블 (생성규칙에 미리 지정된 번호를 사용)
+
+  | M[N,T] |  a  |  b  |  c  |  d  |  q  |  $  |
+  | :----: | :-: | :-: | :-: | :-: | :-: | :-: |
+  |   S    |  1  |  1  |  1  |     |  1  |  1  |
+  |   C    |     |     |  2  |  3  |     |  3  |
+  |   A    |  4  |  5  |  5  |     |  5  |  5  |
+  |   B    |     |  6  |  7  |  7  |  7  |  7  |
+  |   Q    |     |     |  9  |     |  8  |  9  |
+
+</details>
+
+#### 11. cdbba를 Input값으로 하여 10번의 파싱테이블을 통해 구문분석 하여라
+
+<details>
+ <summary>정답</summary>
+
+| Parsing Stack |  Input |   Action    |
+| :------------ | -----: | :---------: |
+| $S            | abbdc$ |  S ⟶ A C $  |
+| $CA           | abbdc$ | A ⟶ a B C d |
+| $CdCBa        | abbdc$ |    match    |
+| $CdCB         |  bbdc$ |   B ⟶ b B   |
+| $CdCBb        |  bbdc$ |    match    |
+| $CdCB         |   bdc$ |   B ⟶ b B   |
+| $CdCBb        |   bdc$ |    match    |
+| $CdCB         |    dc$ |    B ⟶ ε    |
+| $CdC          |    dc$ |    C ⟶ ε    |
+| $Cd           |    dc$ |    match    |
+| $C            |     c$ |    C ⟶ c    |
+| $c            |     c$ |    match    |
+| $             |      $ |   accept    |
+
+</details>
+
+#### 12. 다음 문법을 가지고 First와 Follow를 구한 다음 LL(1) 조건을 만족하는지 확인하고 파싱테이블을 구성하시오
+
+```
+S ⟶ a S | b A
+A ⟶ a A b | ε
+```
+
+<details>
+ <summary>정답</summary>
+
+```
+FIRST(S) = {a, b}
+FIRST(A) = {a}
+FOLLOW(S) = {$}
+FOLLOW(A) = {b, $}
+
+FIRST(aS) ∩ FIRST(bA) = {a} ∩ {b} = ∅
+FIRST(aAb) ∩ FOLLOW(A) = {a} ∩ {b, $} = ∅
+>>> It's LL(1)
+```
+
+| M[N,T] |     a     | b       | $     |
+| :----: | :-------: | ------- | ----- |
+|   S    |  S ⟶ a S  | S ⟶ b A |       |
+|   A    | A ⟶ a A b | A ⟶ ε   | A ⟶ ε |
 
 </details>
