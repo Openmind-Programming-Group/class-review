@@ -159,6 +159,7 @@ op ⟶ + | - | *
 
 - **Yes**. 공통부분이 있는 생성규칙들은 공통부분을 묶은 생성규칙으로 변환해야하며 좌순환 되어있는 생성규칙을 우순환 생성규칙으로 변환하여야 한다.
 - 하지만 상향식(Bottom-Up) 구문 분석은 전처리가 필요하지 않다.
+  > LR-Parsing-Algorithm에서는 Single Production Rule `S'`를 추가한 확장문법으로 파싱되기에 어느정도의 전처리는 필요하다.
 
 </details>
 
@@ -666,9 +667,154 @@ FIRST(aAb) ∩ FOLLOW(A) = {a} ∩ {b, $} = ∅
 >>> It's LL(1)
 ```
 
-| M[N,T] |     a     | b       | $     |
-| :----: | :-------: | ------- | ----- |
+| M[N,T] |     a     |    b    |   $   |
+| :----: | :-------: | :-----: | :---: |
 |   S    |  S ⟶ a S  | S ⟶ b A |       |
-|   A    | A ⟶ a A b | A ⟶ ε   | A ⟶ ε |
+|   A    | A ⟶ a A b |  A ⟶ ε  | A ⟶ ε |
+
+</details>
+
+## 상향식 구문분석 (Bottom-Up)
+
+#### 1. 입력문장 id + id \* id 에 대해 우단 유도 과정을 보이고 핸들을 찾아보자
+
+```
+E ⟶ E + T | T
+T ⟶ T * F | F
+F ⟶ (E) | id
+```
+
+<details>
+ <summary>정답</summary>
+
+|   우문장 형태    |  핸들  | 감축에 사용되는 생성 규칙 |
+| :--------------: | :----: | :-----------------------: |
+| id1 + id2 \* id3 |  id1   |          F ⟶ id           |
+|  F + id2 \* id3  |   F    |           T ⟶ F           |
+|  T + id2 \* id3  |   T    |           E ⟶ T           |
+|  E + id2 \* id3  |  id2   |          F ⟶ id           |
+|   E + F \* id3   |   F    |           T ⟶ F           |
+|   E + T \* id3   |  id3   |          F ⟶ id           |
+|    E + T \* F    | T \* F |        T ⟶ T \* F         |
+|      E + T       | E + T  |         E ⟶ E + T         |
+|        E         |        |                           |
+
+</details>
+
+#### 2. A ⟶ XYZ 일 때 LR(0) item은 몇 개인가?
+
+<details>
+  <summary>정답</summary>
+
+```
+.XYZ
+X.YZ
+XY.Z
+XYZ.
+
+총 4개
+```
+
+</details>
+
+#### 3. 다음 생성규칙을 갖는 문법의 LR(0) item을 구하시오
+
+```
+// 1
+S' ⟶ S
+S ⟶ (S)S | ε
+
+// 2
+E' ⟶ E
+E ⟶ E + n | n
+```
+
+<details>
+  <summary>정답</summary>
+
+```
+// solved 1
+S' ⟶ .S
+S' ⟶ S.
+S ⟶ .(S)S
+S ⟶ (.S)S
+S ⟶ (S.)S
+S ⟶ (S).S
+S ⟶ (S)S.
+S ⟶ .
+
+// solved 2
+E' ⟶ .E
+E' ⟶ E.
+E ⟶ .E+n
+E ⟶ E.+n
+E ⟶ E+.n
+E ⟶ E+n.
+E ⟶ .n
+E ⟶ n.
+```
+
+</details>
+
+#### 4. 다음 생성규칙을 갖는 문법에서 closure를 구하시오
+
+```
+E' ⟶ E
+E ⟶ E + T | T
+T ⟶ T * F | F
+F ⟶ (E) | id
+
+CLOSURE([E'⟶.E]) = ?
+CLOSURE([E⟶E+.T]) = ?
+CLOSURE([E⟶.T]) = ?
+```
+
+<details>
+  <summary>정답</summary>
+
+```
+CLOSURE([E'⟶.E]) = E' ⟶ E.
+                    E ⟶ .E + T
+                    E ⟶ .T
+                    T ⟶ .T * F
+                    T ⟶ .F
+                    F ⟶ .(E)
+                    F ⟶ .id
+
+CLOSURE([E⟶E+.T]) = E ⟶ E+T.
+                    T ⟶ .T * F
+                    T ⟶ .F
+                    F ⟶ .(E)
+                    F ⟶ .id
+
+CLOSURE([E⟶.T]) = E ⟶ T.
+                    T ⟶ .T * F
+                    T ⟶ .F
+                    F ⟶ .(E)
+                    F ⟶ .id
+```
+
+</details>
+
+#### 5. 4번의 생성규칙을 적용하여 I = {[E' ⟶ E.], [E ⟶ E.+T]}일 때, GOTO(I, +)를 구하시오
+
+<details>
+  <summary>정답</summary>
+
+```
+GOTO(I, +) = CLOSURE([E ⟶ E+.T])
+           = {[E ⟶ E+.T], [T ⟶ .T * F], [T ⟶ .F], [F ⟶ .(E)], [F ⟶ .id]}
+```
+
+</details>
+
+#### 6. LR(0) 문법을 충족하려면 어떠한 조건이 만족되어야하는가?
+
+<details>
+  <summary>정답</summary>
+
+- 다음과 같은 충돌을 해결해야 LR(0) 문법을 따른다고 볼 수 있다.
+  1. shift-reduce conflict
+  2. reduce-reduce conflict
 
 </details>
