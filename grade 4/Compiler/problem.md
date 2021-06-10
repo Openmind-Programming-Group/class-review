@@ -280,10 +280,10 @@ A'⟶ cA' | adA' | ε
 #### 1. First를 구하시오
 
 ```
-type ⟶ simple
+TYPE ⟶ SIMPLE
       |  ^ id
       |  array [simple] of type
-simple ⟶ integer
+SIMPLE ⟶ integer
         |  char
         |  num dotdot num
 
@@ -292,8 +292,8 @@ simple ⟶ integer
 <details>
  <summary>정답</summary>
 
-- FIRST(type) = {simple, ^, array}
-- FIRST(simple) = {integer, char, num}
+- FIRST(TYPE) = {integer, char, num, ^, array}
+- FIRST(SIMPLE) = {integer, char, num}
 
 </details>
 
@@ -600,11 +600,11 @@ Input : ()
 
 ```
 FIRST(S) = {a, b, c, q, $}
-FIRST(C) ={c}
+FIRST(C) = {c}
 FIRST(A) = {a, b, q}
 FIRST(B) = {b}
 FIRST(Q) = {q}
-FOLLOW(S) ={$}
+FOLLOW(S) = {$}
 FOLLOW(C) = {$, d}
 FOLLOW(A) = {c, $}
 FOLLOW(B) = {c, d, q, $}
