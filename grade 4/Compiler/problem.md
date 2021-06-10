@@ -292,7 +292,7 @@ simple ⟶ integer
 <details>
  <summary>정답</summary>
 
-- FIRST(type) = {simple, ^, array}
+- FIRST(type) = {integer, char, num, ^, array}
 - FIRST(simple) = {integer, char, num}
 
 </details>
